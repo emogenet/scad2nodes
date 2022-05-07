@@ -1,5 +1,4 @@
 # scad2nodes
-Convert an OpenSCAD model to a tree of Blender Geometry Nodes
 
 This repo contains experimental code to convert an OpenSCAD model to a tree of Blender geometry nodes
 
@@ -36,7 +35,7 @@ n_000004 = Node("difference", args = '', inputNodes = [n_000002, n_000003, ], co
 output = n_000004
 ```
 
-which when loaded into Blender via ./py.py will produce these:
+which when loaded into Blender via ./py.py will produce this parametric model:
 
 ![sp2.png](https://github.com/emogenet/scad2nodes/blob/main/sp2.png "the object")
 ![nodes.png](https://github.com/emogenet/scad2nodes/blob/main/nodes.png "the geometry node tree")
@@ -77,7 +76,12 @@ hull() {
 }
 ```
 
+Geometry:
+
 ![hull.png](https://github.com/emogenet/scad2nodes/blob/main/hull.png "the object")
+
+Node tree:
+
 ![nodes2.png](https://github.com/emogenet/scad2nodes/blob/main/nodes2.png "the geometry node tree")
 
 # CAVEAT EMPTOR
@@ -87,38 +91,40 @@ The state of this project is very much alpha / in progress, in particular:
 
 # Why does this exist?
 
-  . This was built in the context of the geometry-as-code experiment (see https://www.youtube.com/watch?v=aZq8ZlmqHJo )
-
-  . The current geometry-as-code node operates by calling OpenSCAD externally to fully render the model, which is kind of slow
-
-  . The idea here is to try to express an OpenSCAD object as a native tree of Blender boolean operations
-
-  . The blender CSG engine is quite a bit faster than OpenSCAD's (but less robust), which may in future provide a "fast path" for experimentation / model building, with a switch to full-blown OpenSCAD "rendering" once the model is ready.
-
-  . It's a fun and very fast way to instantiate arbitrarily large geometry node trees in blender
+  - This was built in the context of the geometry-as-code experiment (see https://www.youtube.com/watch?v=aZq8ZlmqHJo )
+  - The current geometry-as-code node operates by calling OpenSCAD externally to fully render the model, which is kind of slow
+  - The idea here is to try to express an OpenSCAD object as a native tree of Blender boolean operations
+  - The blender CSG engine is quite a bit faster than OpenSCAD's (but less robust), which may in future provide a "fast path" for experimentation / model building, with a switch to full-blown OpenSCAD "rendering" once the model is ready.
+  - It's a fun and very fast way to instantiate arbitrarily large geometry node trees in blender
 
 # Usage:
 
-  . make sure you have blender v3.1 installed
-  . make sure you have a C++-17 compiler and make installed
-  . make sure you have a recent version of OpenSCAD installed
+  - make sure you have blender v3.1 installed
+  - make sure you have a C++-17 compiler and make installed
+  - make sure you have a recent version of OpenSCAD installed
 
-  git clone https://github.com/emogenet/scad2nodes
-  cd scad2nodes
+```
+git clone https://github.com/emogenet/scad2nodes
+cd scad2nodes
+```
 
 If you want to try a model that's known to work:
-  make
-  ./py.py
+```
+make
+./py.py
+```
 
 The last step will launch blender and execute the python code in py.py that will create the geometry nodes tree.
 
 If you want to see the tree, select the one object in the scene and open a Geometry Node Editor panel
 
 If you want to try it with your own model (disclaimer: not all OpenSCAD functionalities are implemented yet)
+```
   cp <some/openscad/path/to/mymodel.scad> .
   make
   cp mymodel.py z.py
   ./py.py
+```
 
 # A couple of things worth noting:
 
