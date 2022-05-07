@@ -85,9 +85,13 @@ Node tree:
 ![nodes2.png](https://github.com/emogenet/scad2nodes/blob/main/nodes2.png "the geometry node tree")
 
 # CAVEAT EMPTOR
-The state of this project is very much alpha / in progress, in particular:
-  - it must be run from the command line and is not yet fully integrated into Blender as a plugin
-  - not all OpenSCAD primitives are properly supported yet
+  - The state of this project is very much alpha / in progress, in particular:
+    - it must be run from the command line and is not yet fully integrated into Blender as a plugin
+    - not all OpenSCAD primitives are properly supported yet
+
+  - Complex OpenSCAD code can and will generate *very hairy* trees:
+
+![tree.png](https://github.com/emogenet/scad2nodes/blob/main/tree.png "big tree")
 
 # Why does this exist?
 
