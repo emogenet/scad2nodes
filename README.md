@@ -1,6 +1,6 @@
 # scad2nodes
 
-This repo contains experimental code to convert an OpenSCAD model to a tree of Blender geometry nodes (https://www.blender.org)
+This repo contains experimental code to convert an OpenSCAD model (https://openscad.org/) to a tree of Blender geometry nodes (https://www.blender.org)
 
 # Simple example
 
