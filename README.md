@@ -137,7 +137,15 @@ If you want to try it with your own model (disclaimer: not all OpenSCAD function
     - an "identical subtree packer" that will try and spot identical subtrees in the CSG tree and merge them using a merkle-tree like approach
     - a "transform packer" that will try and spot long strings of 4x4 transforms in the CSG tree and concatenate them into a single transform node
   - Overview of how this works:
-      MyModel.scad -> OpenSCAD -> MyModel.csg file -> parse.cpp -> MyModel.py (Blender python code) -> Blender
+```
+[data: MyModel.scad]                  ->
+(processor: OpenSCAD)                 ->
+[data: MyModel.csg]                   ->
+(processor: parse.cpp)                ->
+[data: MyModel.py]                    ->
+(processor Blender python code py.py) ->
+[data: Blender model]
+```
   - There is quite a bit more work to be done on this:
     - need to make sure all arguments of primitives are taken into account (eg linear_extrude is not done in that regard)
     - automatic layout of the tree when building it would be nice rather than relying on the Arrange Node add-on
