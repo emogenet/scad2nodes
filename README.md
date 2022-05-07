@@ -1,6 +1,6 @@
 # scad2nodes
 
-This repo contains experimental code to convert an OpenSCAD model to a tree of Blender geometry nodes
+This repo contains experimental code to convert an OpenSCAD model to a tree of Blender geometry nodes (https://www.blender.org)
 
 # Simple example
 
@@ -120,6 +120,7 @@ If you want to see the tree, select the one object in the scene and open a Geome
 
 If you want to try it with your own model (disclaimer: not all OpenSCAD functionalities are implemented yet)
 ```
+  cd scad2nodes
   cp <some/openscad/path/to/mymodel.scad> .
   make
   cp mymodel.py z.py
@@ -128,26 +129,21 @@ If you want to try it with your own model (disclaimer: not all OpenSCAD function
 
 # A couple of things worth noting:
 
-  If you see something along the lines of "RuntimeError: Error: Node type GeometryNodeMeshBoolean undefined" when you run py.py, it means your version of Blender is too old. Install v3.1 at least.
-
-  Some OpenSCAD primitives require the creation of BMesh objects external to the node tree (eg polygon primitive). The code creates objects in that case and "injects" them into the tree via "Object Info" nodes
-
-  There is a Blender native add-on called 'Node Arrange' . I suggest you activate it as it will help automatically layout the sometimes very large trees produced by this project. It will take a very long time when the tree is very large, but it is nevertheless useful.
-
-  parse.cpp is not very sophisticated, but not completely naive either. It comes with:
+  - If you see something along the lines of "RuntimeError: Error: Node type GeometryNodeMeshBoolean undefined" when you run py.py, it means your version of Blender is too old. Install v3.1 at least.
+  - Some OpenSCAD primitives require the creation of BMesh objects external to the node tree (eg polygon primitive). The code creates objects in that case and "injects" them into the tree via "Object Info" nodes
+  - There is a Blender native add-on called 'Node Arrange' . I suggest you activate it as it will help automatically layout the sometimes very large trees produced by this project. It will take a very long time when the tree is very large, but it is nevertheless useful.
+  - parse.cpp is not very sophisticated, but not completely naive either. It comes with:
     - a "dead code  elimination" pass that will try and spot useless portions of the CSG tree and remove them
     - an "identical subtree packer" that will try and spot identical subtrees in the CSG tree and merge them using a merkle-tree like approach
     - a "transform packer" that will try and spot long strings of 4x4 transforms in the CSG tree and concatenate them into a single transform node
-
-  Overview of how this works:
-      MymOdel.scad -> OpenSCAD -> MyModel.csg file -> parse.cpp -> MyModel.py (Blender python code) -> Blender
-
-  There is quite a bit more work to be done on this:
+  - Overview of how this works:
+      MyModel.scad -> OpenSCAD -> MyModel.csg file -> parse.cpp -> MyModel.py (Blender python code) -> Blender
+  - There is quite a bit more work to be done on this:
     - need to make sure all arguments of primitives are taken into account (eg linear_extrude is not done in that regard)
     - automatic layout of the tree when building it would be nice rather than relying on the Arrange Node add-on
     - add missing primitives (eg polyehedron, rotate_extrude, minkowski)
     - fine-tune some primitives (eg. text)
     - testing
 
-  enhancements and patches are most welcome
+  - enhancements and patches are most welcome
 
