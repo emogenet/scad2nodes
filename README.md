@@ -1,5 +1,5 @@
 # scad2nodes
-Code to convert an OpenSCAD model to a tree of Blender Geometry Nodes
+Convert an OpenSCAD model to a tree of Blender Geometry Nodes
 
 This repo contains experimental code to convert an OpenSCAD model to a tree of Blender geometry nodes
 
@@ -27,7 +27,7 @@ difference() {
 }
 ```
 
-which will in turn generate the following python file:
+which will in turn generate the following blender-python file:
 ```
 n_000001 = Node("sphere", args = '$fn = 30, $fa = 12, $fs = 2, r = 1', inputNodes = [], code_line=3);
 n_000002 = Node("multmatrix", args = '[[1, 0, 0, -0.5], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]', inputNodes = [n_000001, ], code_line=2);
@@ -38,8 +38,8 @@ output = n_000004
 
 which when loaded into Blender via ./py.py will produce these:
 
-![sp2.png](https://github.com/emogenet/scad2nodes/sp2.png "the object")
-![sp2.png](https://github.com/emogenet/scad2nodes/nodes.png "the geometry node tree")
+![sp2.png](https://github.com/emogenet/scad2nodes/blob/main/sp2.png "the object")
+![sp2.png](https://github.com/emogenet/scad2nodes/blob/main/nodes.png "the geometry node tree")
 
 
 Repo also contains a bunch of example models to try it on.
