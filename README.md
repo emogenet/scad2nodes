@@ -3,7 +3,7 @@ Convert an OpenSCAD model to a tree of Blender Geometry Nodes
 
 This repo contains experimental code to convert an OpenSCAD model to a tree of Blender geometry nodes
 
-# example
+# Simple example
 
 The following OpenSCAD code:
 
@@ -44,7 +44,38 @@ which when loaded into Blender via ./py.py will produce these:
 
 # Other examples
 
-Repo contains a bunch of example models to try it on, here's a slighly more complicated model:
+The repo contains a bunch of example models to try it on, here's a slighly more complicated model:
+
+```
+// a minimal rounded corner box using hull
+
+$fn = 30;
+
+module vertex() {
+  sphere(r=0.2);
+}
+
+module edge() {
+  union() {
+    translate([0,  1, 0]) vertex();
+    translate([0, -1, 0]) vertex();
+  }
+}
+
+module square() {
+  translate([ 1, 0, 0]) edge();
+  translate([-1, 0, 0]) edge();
+}
+
+module cube() {
+    translate([0, 0,  1]) square();
+    translate([0, 0, -1]) square();
+}
+
+hull() {
+  cube();
+}
+```
 
 ![hull.png](https://github.com/emogenet/scad2nodes/blob/main/hull.png "the object")
 ![nodes2.png](https://github.com/emogenet/scad2nodes/blob/main/nodes2.png "the geometry node tree")
