@@ -6,6 +6,8 @@ py := $(patsubst %.csg,%.py,${csg})
 all: ${py} z.py
 	@echo ready.
 
+csg: ${csg}
+
 z.py:hull.py
 	cp hull.py z.py
 
