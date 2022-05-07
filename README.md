@@ -86,10 +86,15 @@ The state of this project is very much alpha / in progress, in particular:
   - not all OpenSCAD primitives are properly supported yet
 
 # Why does this exist?
+
   . This was built in the context of the geometry-as-code experiment (see https://www.youtube.com/watch?v=aZq8ZlmqHJo )
+
   . The current geometry-as-code node operates by calling OpenSCAD externally to fully render the model, which is kind of slow
+
   . The idea here is to try to express an OpenSCAD object as a native tree of Blender boolean operations
+
   . The blender CSG engine is quite a bit faster than OpenSCAD's (but less robust), which may in future provide a "fast path" for experimentation / model building, with a switch to full-blown OpenSCAD "rendering" once the model is ready.
+
   . It's a fun and very fast way to instantiate arbitrarily large geometry node trees in blender
 
 # Usage:
