@@ -1,6 +1,6 @@
-#!/usr/bin/env -S blender --python
-#!/usr/bin/env -S blender --factory-startup --python
-#!/usr/bin/env -S blender -b --factory-startup --python
+#!/usr/bin/env -S /home/mgix/b/build_linux/bin/blender --python
+#!/usr/bin/env -S /home/mgix/b/build_linux/bin/blender --factory-startup --python
+#!/usr/bin/env -S /home/mgix/b/build_linux/bin/blender -b --factory-startup --python
 
 # things we need
 # --------------
@@ -29,6 +29,33 @@ def make_polygon(
   edges = []
   faces = [list(range(0, len(vertices)))]
   mesh.from_pydata(vertices, edges, faces)
+  bpy.context.view_layer.objects.active = saved
+
+  obj.hide_viewport = True
+  obj.hide_render = True
+  obj.hide_set(True)
+  return obj
+
+# add a polyhderon
+# -------------
+def make_polyhedron(
+  vertices,
+  faces
+):
+
+  vertices = [[float(v[0]), float(v[1]), float(v[2])] for v in vertices]
+  faces = [[int(i) for i in f] for f in faces]
+
+  mesh = bpy.data.meshes.new("scad_polyhedron")
+  obj = bpy.data.objects.new(mesh.name, mesh)
+  col = bpy.data.collections.get("Collection")
+  col.objects.link(obj)
+
+  saved = bpy.context.view_layer.objects.active
+  bpy.context.view_layer.objects.active = obj
+
+  mesh.from_pydata(vertices, [], faces)
+  mesh.update(calc_edges = True)
   bpy.context.view_layer.objects.active = saved
 
   obj.hide_viewport = True
@@ -293,11 +320,19 @@ def Node(
     poly_node.inputs[0].default_value = poly_obj
     node = poly_node
 
+  elif ('polyhedron'==name):
+    faces = args['faces']
+    points = args['points']
+    poly_obj = make_polyhedron(points, faces)
+    poly_node = group.nodes.new('GeometryNodeObjectInfo')
+    poly_node.inputs[0].default_value = poly_obj
+    node = poly_node
+
   elif ('linear_extrude'==name):
 
     height = float(args['height'])
     extrudeMesh = group.nodes.new('GeometryNodeExtrudeMesh')
-    extrudeMesh.inputs['Individual'].default_value = False
+    extrudeMesh.inputs['Individual'].default_value = True
     extrudeMesh.inputs['Offset Scale'].default_value = height
     if 0<len(inputNodes):
       group.links.new(extrudeMesh.inputs[0], getGeomOutput(inputNodes[0]))
@@ -315,15 +350,14 @@ def Node(
 
   elif 'hull'==name:
     hull = group.nodes.new('GeometryNodeConvexHull')
-    if 1<len(hull.inputs):
+    if 1<len(inputNodes):
       union = group.nodes.new('GeometryNodeMeshBoolean')
       union.operation = 'UNION'
       for inputNode in inputNodes:
         group.links.new(union.inputs[1], getGeomOutput(inputNode))
       group.links.new(hull.inputs[0], getGeomOutput(union))
-    else:
-      if 0<len(inputNodes):
-        group.links.new(hull.inputs[0], getGeomOutput(inputNodes[0]))
+    elif 0<len(inputNodes):
+      group.links.new(hull.inputs[0], getGeomOutput(inputNodes[0]))
     node = hull
 
   elif 'minkowski'==name:
